@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Untuk Aufaa Jauzaa 💕</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- background bubbles + confetti -->
+  <div id="bubbleWrap" aria-hidden="true"></div>
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- theme toggle (top-left) -->
+  <div class="topbar">
+    <div class="mode-toggle">
+      <label class="switch">
+        <input id="themeToggle" type="checkbox" />
+        <span class="slider"></span>
+      </label>
+      <small id="themeLabel">Strawberry</small>
+    </div>
+  </div>
+
+  <!-- loading -->
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">sabar yaa aufaa sayangg 💕</div>
+  </div>
+
+  <main class="app" id="app">
+    <!-- welcome -->
+    <section id="welcomeCard" class="card-center">
+      <h1>Hai Aufaa Jauzaa 🌷</h1>
+      <p class="sub">Ruang kecil yg aku buat buat kamuuu : pengingat makan, jadwal, dan tempat curhat. Buka tiap hari ya sayang 💖</p>
+      <button id="btnStart" class="btn-primary">Mulai Yuk 💕</button>
+    </section>
+
+    <!-- horizontal cards -->
+    <section id="choicesWrap" class="hidden">
+      <div class="cards" id="cards" role="list">
+        <!-- MEAL card -->
+        <article class="card card-small" data-card="meal" role="listitem" tabindex="0">
+          <div class="card-head"><h3>🥗 Laporan Makan</h3><small>Tap tiap kartu setelah makan — muncul popup kalau belum</small></div>
+          <div class="card-body meal-grid">
+            <div class="mini-card" data-meal="pagi" tabindex="0">
+              <div class="mc-left">🌞</div>
+              <div class="mc-body">
+                <strong>Pagi</strong>
+                <small id="pagi-desc">Belum dicatat</small>
+              </div>
+              <div class="mc-right"><button class="mc-toggle" data-meal="pagi">Isi</button></div>
+            </div>
+
+            <div class="mini-card" data-meal="siang" tabindex="0">
+              <div class="mc-left">🌤️</div>
+              <div class="mc-body">
+                <strong>Siang</strong>
+                <small id="siang-desc">Belum dicatat</small>
+              </div>
+              <div class="mc-right"><button class="mc-toggle" data-meal="siang">Isi</button></div>
+            </div>
+
+            <div class="mini-card" data-meal="malam" tabindex="0">
+              <div class="mc-left">🌙</div>
+              <div class="mc-body">
+                <strong>Malam</strong>
+                <small id="malam-desc">Belum dicatat</small>
+              </div>
+              <div class="mc-right"><button class="mc-toggle" data-meal="malam">Isi</button></div>
+            </div>
+
+            <div id="uploadArea" style="display:none;margin-top:6px">
+              <label class="upload-label">Upload PAP makanan (muncul setelah semua tercatat)</label>
+              <input id="meal_photo" type="file" accept="image/*" />
+            </div>
+
+            <div class="actions" style="margin-top:6px">
+              <button id="saveMeal" class="btn">Simpan Laporan (sementara)</button>
+              <button id="shareMeal" class="btn-ghost">Kirim ke Sayang 💌</button>
+            </div>
+            <small style="display:block;margin-top:8px;color:#7a4b57">
+          </div>
+        </article>
+
+        <!-- SCHEDULE card (kartu aktivitas, bukan checklist) -->
+        <article class="card card-small" data-card="schedule" role="listitem" tabindex="0">
+          <div class="card-head"><h3>🕰️ Jadwal Harian</h3><small>Aktivitas harian buat kamuu</small></div>
+          <div class="card-body schedule-cards">
+            <!-- each schedule shown as card -->
+            <div class="sched-card"><strong>Bangun tidur</strong><small>— pagi</small></div>
+            <div class="sched-card"><strong>Sholat Subuh</strong><small>— (ya / tidak)</small></div>
+            <div class="sched-card"><strong>Mandi</strong><small>— setelah subuh</small></div>
+            <div class="sched-card"><strong>Sarapan</strong><small>— sebelum berangkat</small></div>
+            <div class="sched-card"><strong>Siap-siap</strong><small>— rapi & siap</small></div>
+            <div class="sched-card"><strong>Berangkat sekolah</strong><small>— jalan</small></div>
+            <div class="sched-card"><strong>Belajar</strong><small>— fokus</small></div>
+            <div class="sched-card"><strong>Makan siang</strong><small>— istirahat</small></div>
+            <div class="sched-card"><strong>Sholat Dhuhur</strong><small>— (ya / tidak)</small></div>
+            <div class="sched-card"><strong>Istirahat sejenak</strong><small>— recharge</small></div>
+            <div class="sched-card"><strong>Rapat (opsional)</strong><small>— kalau ada</small></div>
+            <div class="sched-card"><strong>Sholat Ashar</strong><small>— sore</small></div>
+            <div class="sched-card"><strong>Pulang ke boarding</strong><small>— sore</small></div>
+            <div class="sched-card"><strong>Bersih-bersih badan</strong><small>— after pulang</small></div>
+            <div class="sched-card"><strong>Mandi</strong><small>— sebelum maghrib</small></div>
+            <div class="sched-card"><strong>Siap-siap sholat Maghrib</strong><small>— malam</small></div>
+          </div>
+        </article>
+
+        <!-- NOTES card -->
+        <article class="card card-small" data-card="notes" role="listitem" tabindex="0">
+          <div class="card-head"><h3>📔 Buku Harian</h3><small>Tulis perasaan & catatan — disimpan</small></div>
+          <div class="card-body">
+            <input id="note_title" placeholder="Judul (opsional)" />
+            <textarea id="note_text" rows="4" placeholder="Curhat atau catatan harian..."></textarea>
+
+            <div class="actions">
+              <button id="addNote" class="btn">Tambah Catatan</button>
+              <button id="exportNotes" class="btn-ghost">Export (.txt)</button>
+            </div>
+
+            <div id="notesList" class="notes-list"></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="pager">foto foto kamuuu →</div>
+    </section>
+
+    <!-- photo strip -->
+    <section id="photoStripWrap" class="hidden">
+      <div class="photo-track" id="photoTrack" aria-hidden="true">
+        <img src="Send Anywhere (2025-11-06 08-22-02)/IMG-20250906-WA0048 (1).jpg" alt="">
+        <img src="Send Anywhere (2025-11-06 08-22-02)/IMG-20251021-WA0059.jpg" alt="">
+        <img src="Send Anywhere (2025-11-06 08-22-02)/IMG-20251022-WA0024.jpg" alt="">
+        <img src="Send Anywhere (2025-11-06 08-22-02)/IMG-20251022-WA0026.jpg" alt="">
+        <img src="Send Anywhere (2025-11-06 08-22-02)/IMG-20251030-WA0029.jpg" alt="">
+        <img src="Send Anywhere (2025-11-06 08-22-02)/IMG-20251030-WA0030.jpg" alt="">
+        <!-- duplicate -->
+       <img src="Send Anywhere (2025-11-06 08-22-02)/IMG-20250906-WA0048 (1).jpg" alt="">
+        <img src="Send Anywhere (2025-11-06 08-22-02)/IMG-20251021-WA0059.jpg" alt="">
+        <img src="Send Anywhere (2025-11-06 08-22-02)/IMG-20251022-WA0024.jpg" alt="">
+        <img src="Send Anywhere (2025-11-06 08-22-02)/IMG-20251022-WA0026.jpg" alt="">
+        <img src="Send Anywhere (2025-11-06 08-22-02)/IMG-20251030-WA0029.jpg" alt="">
+        <img src="Send Anywhere (2025-11-06 08-22-02)/IMG-20251030-WA0030.jpg" alt="">
+      </div>
+    </section>
+  </main>
+
+  <!-- modal center -->
+  <div id="modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-content">
+      <button id="modalClose" class="modal-close" aria-label="Tutup">✕</button>
+      <div id="modalInner"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
